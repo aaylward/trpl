@@ -59,11 +59,9 @@ fn main() {
 
         'guess: loop {
             let guess = next_guess(already_guessed);
-            match guess { None => continue, _ => {} }
-            already_guessed = true;
+            match guess { None => continue, _ => { already_guessed = true } }
 
-            match guess.expect("should be i32")
-                .cmp(&secret_number) {
+            match guess.expect("should be i32").cmp(&secret_number) {
                 Ordering::Less => write("Too small!"),
                 Ordering::Greater => write("Too big!"),
                 Ordering::Equal => {
