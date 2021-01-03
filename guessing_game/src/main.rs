@@ -18,21 +18,24 @@ fn sleep_millis(millis : u64) {
     thread::sleep(time::Duration::from_millis(millis));
 }
 
+fn read_line() -> String {
+    let mut line = String::new();
+    io::stdin().read_line(&mut line)
+        .expect("failed to read line.");
+    return line.trim().to_string();
+}
+
 fn next_guess(already_guessed: bool) -> Option<i32> {
     match already_guessed {
         true => write("Try again:"),
         false => write("Enter a number:")
     }
 
-    let mut guess = String::new();
-    io::stdin().read_line(&mut guess)
-        .expect("failed to read line.");
-
-    let result = guess.trim().parse();
-    match result {
+    let guess = read_line();
+    match guess.parse() {
         Ok(v) => Some(v),
         Err(_) => {
-            print!("{} is not a number. ", guess.trim());
+            print!("{} is not a number. ", guess);
             None
         }
     }
@@ -40,11 +43,7 @@ fn next_guess(already_guessed: bool) -> Option<i32> {
 
 fn play_again() -> bool {
     write("You win! Play again? (y/n)");
-
-    let mut response = String::new();
-    io::stdin().read_line(&mut response)
-        .expect("failed to read line.");
-    response.trim().eq_ignore_ascii_case("y")
+    read_line().eq_ignore_ascii_case("y")
 }
 
 fn main() {
